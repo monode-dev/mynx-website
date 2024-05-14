@@ -37,12 +37,7 @@ export default defineConfig({
       },
       {
         text: "Known Bugs",
-        items: [
-          {
-            text: "Clicking Nested Elements",
-            link: "/known-bugs/clicking-nested-elements",
-          },
-        ],
+        items: [],
       },
       {
         text: "Docs",
