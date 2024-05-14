@@ -7,7 +7,7 @@ hero:
   text: "A Language Made for App Development"
   # tagline: A nsormalized approach to UI styling
   image:
-    src: /mx10.png
+    src: /MX10.png
     alt: MX
   actions:
     - theme: brand
