@@ -1,19 +1,5 @@
 :root {
-  --vp-c-brand-1: #60cc66;
-  --vp-c-brand-2: #60cc66;
-  --vp-c-brand-3: #60cc66;
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: center / cover
-    url("/mynx-ui-background-half-flat.svg");
-}
-
-.VPHero .name {
-  font-family: "Montserrat";
-}
-
-.VPNavBarTitle span:first-of-type {
-  /* font-family: "Montserrat"; */
-  /* -webkit-text-fill-color: transparent;
-  background: center / cover url("/mynx-background.svg");
-  background-clip: text; */
+  --vp-c-brand-1: #60b1f2;
+  --vp-c-brand-2: #60b1f2;
+  --vp-c-brand-3: #60b1f2;
 }
