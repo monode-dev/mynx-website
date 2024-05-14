@@ -15,7 +15,7 @@ hero:
       link: /cookbook/quickstart
     - theme: alt
       text: Docs
-      link: /styling/overview
+      link: /docs/overview
 
 features:
   - title: Simple
