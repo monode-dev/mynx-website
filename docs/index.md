@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "Mynx UI"
-  text: "A Highly Flexible UI System for Solid JS"
+  name: "Mynx"
+  text: "A Language Made for App Development"
   # tagline: A nsormalized approach to UI styling
   image:
     src: /kiwi.svg
