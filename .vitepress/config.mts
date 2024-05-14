@@ -36,6 +36,15 @@ export default defineConfig({
         items: [{ text: "Quickstart", link: "/cookbook/quickstart" }],
       },
       {
+        text: "Known Bugs",
+        items: [
+          {
+            text: "Clicking Nested Elements",
+            link: "/known-bugs/clicking-nested-elements",
+          },
+        ],
+      },
+      {
         text: "Docs",
         items: [{ text: "Overview", link: "/docs/overview" }],
       },
