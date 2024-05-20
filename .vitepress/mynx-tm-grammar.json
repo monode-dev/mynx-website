@@ -1,0 +1,123 @@
+{
+  "name": "Mynx",
+  "id": "mynx",
+  "aliases": ["mynx", "mx"],
+  "fileTypes": ["mynx", "mx"],
+  "scopeName": "source.mynx",
+  "repository": {
+    "language": {
+      "patterns": [
+        {
+          "comment": "multilineComment",
+          "name": "comment.mynx",
+          "begin": "\\\\",
+          "end": "\\\\"
+        },
+        {
+          "comment": "jsLiteral",
+          "name": "txt.mynx",
+          "begin": "`",
+          "end": "`"
+        },
+        {
+          "comment": "litStr",
+          "name": "string.quoted.double.raw.mynx",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "keyword.operator.mynx",
+              "begin": "\\$\\(",
+              "end": "\\)",
+              "patterns": [
+                {
+                  "include": "#language"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "comment": "litNum",
+          "name": "constant.numeric.mynx",
+          "match": "-?[0-9]+(\\.[0-9]+)?"
+        },
+        {
+          "comment": "controlKeywords",
+          "name": "keyword.control.mynx",
+          "match": "\\b(if)\\b|\\b(then)\\b|\\b(elif)\\b|\\b(else)\\b|\\b(for)\\b|\\b(until)\\b|\\b(return)\\b|\\b(copy)\\b"
+        },
+        {
+          "comment": "static_keyword",
+          "name": "keyword.declaration.mynx",
+          "match": "\\b(static)\\b"
+        },
+        {
+          "comment": "separators",
+          "name": "keyword.operator.mynx",
+          "match": ",|;"
+        },
+        {
+          "comment": "typeOperators",
+          "name": "keyword.operator.mynx",
+          "match": "\\||\\&"
+        },
+        {
+          "comment": "brackets",
+          "name": "keyword.operator.mynx",
+          "match": "\\)|\\(|\\]|\\[|\\}|\\{"
+        },
+        {
+          "comment": "dotOperators",
+          "name": "keyword.operator.mynx",
+          "match": "\\.|\\.\\?|\\.\\!"
+        },
+        {
+          "comment": "defOperators",
+          "name": "keyword.declaration.mynx",
+          "match": "\\??(:=|:>|:|=>)"
+        },
+        {
+          "comment": "comparisonKeywords",
+          "name": "keyword.declaration.mynx",
+          "match": "\\b(and)\\b|\\b(or)\\b|\\b(not)\\b|\\b(is)\\b|\\b(exactly)\\b"
+        },
+        {
+          "comment": "arithmeticOperators",
+          "name": "keyword.operator.mynx",
+          "match": "\\+|-|\\*|\\/|>=|>|=<|<|="
+        },
+        {
+          "comment": "mod_keyword",
+          "name": "keyword.declaration.mynx",
+          "match": "\\b(mod)\\b"
+        },
+        {
+          "comment": "symbols",
+          "name": "variable.other.constant.mynx",
+          "match": "\\b(false)\\b|\\b(true)\\b|\\b(valid)\\b|\\b(invalid)\\b|\\b(params)\\b|\\b(none)\\b"
+        },
+        {
+          "comment": "__keyword",
+          "name": "variable.name.mynx",
+          "match": "\\b(_)\\b"
+        },
+        {
+          "comment": "varIdent",
+          "name": "variable.name.mynx",
+          "match": "\\b(_*[a-z]+[A-Za-z0-9_]*)\\b"
+        },
+        {
+          "comment": "typeIdent",
+          "name": "support.class.mynx",
+          "match": "\\b(_*[A-Z]+[A-Za-z0-9_]*)\\b"
+        }
+      ]
+    }
+  },
+  "patterns": [
+    {
+      "include": "#language"
+    }
+  ]
+}

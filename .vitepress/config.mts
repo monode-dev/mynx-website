@@ -1,4 +1,6 @@
 import { defineConfig } from "vitepress";
+import mynxTmLangJson from "./mynx-tm-grammar.json";
+import darkVsTheme from "./dark_vs.json";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -20,6 +22,10 @@ export default defineConfig({
     ],
     ["meta", { property: "og:url", content: "https://mynx-website.web.app/" }],
   ],
+  markdown: {
+    languages: [mynxTmLangJson as any],
+    theme: darkVsTheme,
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     // logo: "/kiwi.svg",
@@ -41,7 +47,10 @@ export default defineConfig({
       },
       {
         text: "Docs",
-        items: [{ text: "Overview", link: "/docs/overview" }],
+        items: [
+          { text: "Overview", link: "/docs/overview" },
+          { text: "Var and Func Def", link: "/docs/var-and-func-def" },
+        ],
       },
       {
         text: "Theory",
