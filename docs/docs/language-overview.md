@@ -173,7 +173,7 @@ If an if check is done, Mynx will narrow the inferred type. For example:
 \ This will infer the type of `myVar` to be `Num` \
 myVar: 5
 
-if (myVar is 5) then (
+if (myVar is 5) do (
   \ We now know that the read type of `myVar` is currently `5`, although it can still be assigned to any num. \
   console.log.{myVar}
 )
@@ -517,73 +517,85 @@ A code block starts with an opening parenthesis `(` and ends with a closing pare
 )
 ```
 
-### Only Last Line Return
+### Returning Values
 
-In Mynx, only the last line of a code block is returned as the result of the block. This means that if you have multiple lines of code within a block, only the value of the last line will be used. This makes code blocks work as standard operation-grouping tools and tools for encapsulating complex logic. For example:
-
-```mx
-result: (
-  a: 5
-  b: 10
-  a + b  \ Only this line's result (15) will be returned \
-)
-
-\ Last line return lets code blocks enable operation grouping. \
-myNum: (1 + 2) / 5
-```
-
-In the above example, `result` will be assigned the value `15`.
-
-_We should we should probably just show a warning if there is a non-last-line-return instead of a full blown error._
-
-#### Auto Formatter
-
-The auto formatter in Mynx will automatically insert a `return` statement on multi-line code blocks to ensure that the last line's value is returned. This helps to avoid confusion and makes the code more readable. For example:
+In Mynx, code blocks can return values. This allows you to use a code block as an expression or to return a result from a function. By default, the value of the last line in the code block is automatically returned:
 
 ```mx
-\ Before auto formatting \
+\ This code block will return the value of `y` \
 (
-  a: 5
-  b: 10
-  a + b
-)
-
-\ After auto formatting \
-(
-  a: 5
-  b: 10
-  return a + b
+  x: 5
+  y: x + 10
+  y
 )
 ```
 
-### Fail Early
-
-Mynx provides a `fail_if` statement that allows you to fail early within a code block if a certain condition is met. This can be useful for error handling and ensuring that invalid states are caught early. For example:
+You can also explicitly return a value from a code block using the `return`, `ret`, or `stop` keywords:
 
 ```mx
+\ This code block will return the value of `y` using the `return` keyword \
 (
+  x: 5
+  y: x + 10
+  return y
+)
+```
+
+#### Encapsulated Return
+
+_It is important to not that in Mynx return only returns from the current code block. Returning from a nested code block, if statement, or for loop will only return from that block._
+
+```mx
+myVar: (
+  a: (
+    b: 5
+    return b
+  )
+  return a
+)
+```
+
+#### Returning Early
+
+If you want to return before the last line use an `if` statement with no `else`:
+
+```mx
+\ This code block will return early if `x` is less than 5 \
+(
+  x: 5
+  stop if (x < 5) then 0
+  return x + 10
+)
+```
+
+By convention `stop` is used for early returns while `return` and `ret` are for explicit last line return. However they can technically be used interchangeably. The auto-formatter should enforce convention.
+
+#### Result
+
+As an alternate to last line return, Mynx has the `res` and `result` keywords. Assigning to `res` or `result` will return that value. For example:
+
+```mx
+\ `myVar` will equal 15 \
+myVar: (
   a: 5
-  b: 0
-
-  \ Fail early if `b` is zero to avoid division by zero \
-  fail_if b is 0
-
-  result: a / b
+  b: 10
+  res: a + b
+  console.log.{a + b}
 )
 ```
 
 ## Control Flow
 
-### `if ... then ... else if ... then ... else`
+### If-Else Blocks
 
-The `if ... then ... else if ... then ... else` construct in Mynx allows you to perform conditional logic. This is similar to if-else statements in other programming languages, but with a syntax that emphasizes readability and simplicity.
+If-else blocks in Mynx follow the syntax `if ... then ... else if ... then ... else` construct in Mynx allows you to perform conditional logic. This is similar to if-else statements in other programming languages, but with a syntax that emphasizes readability and simplicity.
 
 #### Basic Syntax
 
 The basic syntax for an `if ... then ... else` statement in Mynx is as follows:
 
 ```mx
-if (condition) then (
+if (condition) do (
   \ code to execute if condition is true \
 ) else (
   \ code to execute if condition is false \
@@ -593,9 +605,9 @@ if (condition) then (
 You can also chain multiple conditions using else if:
 
 ```mx
-if (condition1) then (
+if (condition1) do (
   \ code to execute if condition1 is true \
-) else if (condition2) then (
+) else if (condition2) do (
   \ code to execute if condition2 is true \
 ) else (
   \ code to execute if none of the conditions are true \
@@ -606,52 +618,129 @@ if (condition1) then (
 
 In Mynx, if blocks can return values. This means that you can use an if block as part of an expression. For example:
 
-
 ```mx
 myVar: if (true) then 5 else 10
 ```
 
 In this example, myVar will be assigned the value 5 because the condition true is met.
 
-### `for`
+### For Loops
 
-for can be used as `map`, `reduce`, and `filter`:
+In Mynx for loops have the syntax `for ... in ... do ...` or `for ... in ... then ...`. By convention `do` is used if the following expression can cause mutations, and `then` is used only if the following expression will not cause mutations:
 
-#### `stop_loop`
+```mx
+\ For loops can be used like so \
+for (i in 0..5) do (
+  \ code to execute for each value of `i` \
+)
+```
 
-Can return a value.
+The `in` keyword is used to specify the range of values that the loop should iterate over. In this case, the loop will iterate over the values from 0 to 5.
 
-#### `continue`
+#### Looping Over Lists
 
-Can be used to enable filtering.
+You can also loop over lists using the `in` keyword. For example:
 
-#### `result`
+```mx
+\ Loop over a list of values \
+for (value in myList) do (
+  \ code to execute for each value in `myList` \
+)
+```
 
-_Maybe `res` also works as an alternative? Or maybe we don't make the variable name be a keyword, and just use conditional highlighting?_
+#### Looping Over Dictionaries
 
-### `until`
+You can loop over dictionaries using the `in` keyword. For example:
 
-#### `stop_loop`
+```mx
+\ Loop over a dictionary of key-value pairs \
+for (value, key in myDict) do (
+  \ code to execute for each key-value pair in `myDict` \
+)
+```
 
-Can return a value.
+The `key` portion is optional. If you only want the values you can omit it.
 
-#### `continue`
+```mx
+\ Loop over a dictionary of values \
+for (value in myDict) do (
+  \ code to execute for each value in `myDict` \
+)
+```
 
-Can be used to enable filtering.
+#### Mapping with For Loops
 
-#### `result`
+For loops can be used to transform lists or dictionaries. For example:
 
-_Maybe `res` also works as an alternative? Or maybe we don't make the variable name be a keyword, and just use conditional highlighting?_
+```mx
+\ Map over a list of values \
+mappedList: for (value in myList) do (value * 2)
+```
+
+#### Stopping Early
+
+If for some reason you need to stop a loop early, but it's not an error, you can use the `stop_loop` keyword. For example:
+
+```mx
+\ Stop the loop early if a condition is met \
+for (value in myList) do (
+  \ Stop the loop if the value is greater than 5 \
+  stop_loop if (value > 5)
+)
+```
+
+#### Filtering with For Loops
+
+For loops can be used to filter lists or dictionaries. For example:
+
+```mx
+\ Filter a list of values \
+filteredList: for (value in myList) do (
+  \ Only include values that are greater than 5 \
+  if (value is_a error) then continue
+  value
+)
+```
+
+### Until Loops
+
+In Mynx, until loops have the syntax `until ... do ...`. For example:
+
+```mx
+\ Until loops can be used like so \
+haveFoundIt: false
+until haveFoundIt do (
+  \ code to execute until the condition is true \
+)
+```
+
+#### Do-until Loops
+
+Mynx also supports do-until loops. They have the syntax `do ... until ...`. For example:
+
+```mx
+\ Do-until loops can be used like so \
+areDone: false
+do (
+  \ code to execute until the condition is true \
+) until areDone
+```
 
 ## Dictionaries and Lists
 
+Most iterables need a `list.range` property to make it easy to use them with indexed for loops.
+
 ## Functions
+
+Invoked using `myFunc.{params}`
 
 ### Formulas vs Actions
 
 ### Formula Reactivity
 
 ## Handling Errors
+
+By convention all errors inherit from `error`. Errors are never thrown, only passed around as values.
 
 ## Extending Types
 
@@ -660,3 +749,5 @@ extend Num {
   isEven: Bool = this mod 2 is 0
 }
 ```
+
+## Generic Types
