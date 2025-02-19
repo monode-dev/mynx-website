@@ -73,6 +73,33 @@ Properties can be accessed using the `.` operator:
 myObj.myProp
 ```
 
+#### Extracting props
+
+Object properties can be extracted using `{}:`. For example:
+
+```mx
+\ This declares an object `myObj` with a property `myProp` with a value of `5` \
+myObj: { myProp: 5, myOtherProp: 10 }
+
+\ This extracts the property `myProp` from the object `myObj` \
+{myProp}: myObj
+
+\ `myProp` can now be accessed directly \
+console.log.{myProp}
+```
+
+All object properties can be extracted using `*:`. For example:
+
+```mx
+\ This declares an object `myObj` with a property `myProp` with a value of `5` \
+myObj: { myProp: 5, myOtherProp: 10 }
+
+*: myObj
+
+\ `myOtherProp` can now be accessed directly \
+console.log.{myOtherProp}
+```
+
 ### Separators like `,` and `;`
 
 Most of the time separators like `,` and `;` are optional. For example:
@@ -414,21 +441,177 @@ myNum += 10
 
 ## Reactivity
 
-Every variable is reactive and watchable. All expressions are memos / formulas and will only be recalculated if the inputs change. This means that you can use the same variable in multiple places and it will only be calculated once.
+## Reactivity
+
+In Mynx, every variable is inherently reactive and watchable. This means that any change to a variable will automatically propagate to all expressions that depend on it. This reactivity is a core feature of Mynx and allows for efficient and intuitive data flow management.
+
+### Reactive Variables
+
+When you declare a variable in Mynx, it is automatically set up to be reactive. This means that any changes to the variable will trigger updates to any expressions or computations that depend on it. For example:
+
+```mx
+\ Declare a reactive variable `a` \
+a: 5
+
+\ Declare another reactive variable `b` that depends on `a` \
+b: a + 10
+
+\ Changing `a` will automatically update `b` \
+a = 20
+\ Now `b` will be 30 \
+```
+
+### Memos and Formulas
+
+All expressions in Mynx are treated as memos / formulas. This means that they will only be recalculated if their inputs change. This ensures that computations are efficient and only performed when necessary. For example:
+
+```mx
+\ Declare a reactive variable `x` \
+x: 10
+
+\ Declare a memo `y` that depends on `x` \
+y: x * 2
+
+\ `y` will only be recalculated if `x` changes \
+x = 15
+\ Now `y` will be 30 \
+```
+
+### `do watch`
+
+In Mynx, you can use the `do watch` statement to automatically re-run code whenever any of the inputs change. This is useful for side effects or for updating UI elements. For example:
+
+```mx
+\ Declare a reactive variable `count` \
+count: 0
+
+\ Use `do watch` to automatically update the UI whenever `count` changes \
+do watch {
+  \ Will log immediately and then log again whenever `count` changes \
+  console.log.{count}
+}
+```
+
+_Eventually we should probably add `on ... do ...`, `track`, `untrack`, and other reactivity utils._
 
 ## Code Blocks
 
+Code blocks in Mynx are defined by enclosing the code within parentheses `(...)`. This allows for grouping multiple statements together, which can be particularly useful for defining complex expressions or control flow structures.
+
+Code blocks can be used as function bodies, if-else branches, loops, standalone expressions, and more. They provide a way to encapsulate logic and ensure that it is executed in a specific order.
+
+### Syntax
+
+A code block starts with an opening parenthesis `(` and ends with a closing parenthesis `)`. Inside the code block, you can write multiple lines of code, and each line will be executed in sequence. For example:
+
+```mx
+(
+  \ Declare a variable `x` \
+  x: 5
+
+  \ Declare a variable `y` and assign it the value of `x` plus 10 \
+  y: x + 10
+
+  \ Return the value of `y` \
+  y
+)
+```
+
 ### Only Last Line Return
 
-_In this case we should probably just show a warning instead of a full blown error._
+In Mynx, only the last line of a code block is returned as the result of the block. This means that if you have multiple lines of code within a block, only the value of the last line will be used. This makes code blocks work as standard operation-grouping tools and tools for encapsulating complex logic. For example:
 
-_Auto formatter should insert `return` on multi-line code-blocks_
+```mx
+result: (
+  a: 5
+  b: 10
+  a + b  \ Only this line's result (15) will be returned \
+)
 
-### Fail early
+\ Last line return lets code blocks enable operation grouping. \
+myNum: (1 + 2) / 5
+```
+
+In the above example, `result` will be assigned the value `15`.
+
+_We should we should probably just show a warning if there is a non-last-line-return instead of a full blown error._
+
+#### Auto Formatter
+
+The auto formatter in Mynx will automatically insert a `return` statement on multi-line code blocks to ensure that the last line's value is returned. This helps to avoid confusion and makes the code more readable. For example:
+
+```mx
+\ Before auto formatting \
+(
+  a: 5
+  b: 10
+  a + b
+)
+
+\ After auto formatting \
+(
+  a: 5
+  b: 10
+  return a + b
+)
+```
+
+### Fail Early
+
+Mynx provides a `fail_if` statement that allows you to fail early within a code block if a certain condition is met. This can be useful for error handling and ensuring that invalid states are caught early. For example:
+
+```mx
+(
+  a: 5
+  b: 0
+
+  \ Fail early if `b` is zero to avoid division by zero \
+  fail_if b is 0
+
+  result: a / b
+)
+```
 
 ## Control Flow
 
-### `if __ then __ else`
+### `if ... then ... else if ... then ... else`
+
+The `if ... then ... else if ... then ... else` construct in Mynx allows you to perform conditional logic. This is similar to if-else statements in other programming languages, but with a syntax that emphasizes readability and simplicity.
+
+#### Basic Syntax
+
+The basic syntax for an `if ... then ... else` statement in Mynx is as follows:
+
+```mx
+if (condition) then (
+  \ code to execute if condition is true \
+) else (
+  \ code to execute if condition is false \
+)
+```
+
+You can also chain multiple conditions using else if:
+
+```mx
+if (condition1) then (
+  \ code to execute if condition1 is true \
+) else if (condition2) then (
+  \ code to execute if condition2 is true \
+) else (
+  \ code to execute if none of the conditions are true \
+)
+```
+
+#### If Blocks can Return Values
+
+In Mynx, if blocks can return values. This means that you can use an if block as part of an expression. For example:
+
+
+```mx
+myVar: if (true) then 5 else 10
+```
+
+In this example, myVar will be assigned the value 5 because the condition true is met.
 
 ### `for`
 
