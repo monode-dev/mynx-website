@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Mynx"
-  text: "A Language Made for App Development"
+  text: "One Language to Rule Them All"
   # tagline: A nsormalized approach to UI styling
   image:
     src: /MX10.png
@@ -15,7 +15,7 @@ hero:
       link: /cookbook/quickstart
     - theme: alt
       text: Docs
-      link: /docs/overview
+      link: /docs/language-overview
 
 features:
   - title: Simple

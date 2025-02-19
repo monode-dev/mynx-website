@@ -5,7 +5,7 @@ import darkVsTheme from "./dark_vs.json";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Mynx",
-  description: "A Language Made for App Development",
+  description: "One Language to Rule Them All",
   srcDir: "docs",
   head: [
     ["link", { rel: "icon", type: "image/svg+xml", href: "/m.svg" }],
@@ -42,19 +42,22 @@ export default defineConfig({
         items: [{ text: "Quickstart", link: "/cookbook/quickstart" }],
       },
       {
-        text: "Known Bugs",
-        items: [],
-      },
-      {
         text: "Docs",
         items: [
-          { text: "Overview", link: "/docs/overview" },
-          { text: "Var and Func Def", link: "/docs/var-and-func-def" },
+          { text: "Language Overview", link: "/docs/language-overview" },
+          {
+            text: "Theory",
+            link: "/docs/theory/theory",
+            collapsed: true,
+            items: [
+              { text: "Normalization", link: "/docs/theory/normalization" },
+            ],
+          },
         ],
       },
       {
-        text: "Theory",
-        items: [{ text: "Normalization", link: "/theory/normalization" }],
+        text: "Known Bugs",
+        items: [],
       },
     ],
 

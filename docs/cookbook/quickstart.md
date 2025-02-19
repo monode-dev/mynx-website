@@ -50,6 +50,9 @@ numC: 1
 result: addNums(numC, 1) \ result is 2 \
 numC += 1 \ result is now 3 \
 
+\ To make a non-reactive readonly use the copy keyword. \
+constVal: copy numA + numB
+
 \ Mynx supports an XML-like syntax for constructing UIs. \
 ClientCard: { client: Client} =>
   <Card

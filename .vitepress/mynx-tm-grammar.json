@@ -45,7 +45,7 @@
         {
           "comment": "controlKeywords",
           "name": "keyword.control.mynx",
-          "match": "\\b(if)\\b|\\b(then)\\b|\\b(elif)\\b|\\b(else)\\b|\\b(for)\\b|\\b(until)\\b|\\b(return)\\b|\\b(copy)\\b"
+          "match": "\\b(import)\\b|\\b(if)\\b|\\b(then)\\b|\\b(elif)\\b|\\b(else)\\b|\\b(for)\\b|\\b(until)\\b|\\b(return)\\b|\\b(copy)\\b"
         },
         {
           "comment": "static_keyword",
@@ -73,14 +73,25 @@
           "match": "\\.|\\.\\?|\\.\\!"
         },
         {
+          "comment": "AssignOp",
+          "name": "keyword.control.mynx",
+          "match": "=|\\+=|-=|\\*=|/=|mod=",
+          "sortIndex": 0
+        },
+        {
           "comment": "defOperators",
           "name": "keyword.declaration.mynx",
           "match": "\\??(:=|:>|:|=>)"
         },
         {
+          "comment": "modifiers",
+          "name": "keyword.declaration.mynx",
+          "match": "\\b(unique)\\b|\\b(enum)\\b|\\b(extend)\\b"
+        },
+        {
           "comment": "comparisonKeywords",
           "name": "keyword.declaration.mynx",
-          "match": "\\b(and)\\b|\\b(or)\\b|\\b(not)\\b|\\b(is)\\b|\\b(exactly)\\b"
+          "match": "\\b(and)\\b|\\b(or)\\b|\\b(not)\\b|\\b(is)\\b|\\b(exactly)\\b|\\bi(s_no)t\\b|\\b(is)\\b"
         },
         {
           "comment": "arithmeticOperators",
@@ -95,12 +106,18 @@
         {
           "comment": "symbols",
           "name": "variable.other.constant.mynx",
-          "match": "\\b(false)\\b|\\b(true)\\b|\\b(valid)\\b|\\b(invalid)\\b|\\b(params)\\b|\\b(none)\\b"
+          "match": "\\b(false)\\b|\\b(true)\\b|\\b(valid)\\b|\\b(invalid)\\b|\\b(params)\\b|\\b(none)\\b|\\b(pending)\\b"
         },
         {
           "comment": "__keyword",
           "name": "variable.name.mynx",
           "match": "\\b(_)\\b"
+        },
+        {
+          "comment": "TrueAndFalse",
+          "name": "variable.other.constant.mynx",
+          "match": "\\b(true)\\b|\\b(false)\\b|\\b(error)\\b",
+          "sortIndex": 0
         },
         {
           "comment": "varIdent",
